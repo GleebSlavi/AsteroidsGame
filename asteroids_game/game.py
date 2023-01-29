@@ -1,5 +1,6 @@
 import pygame
 
+from game_object import GameObject
 from image_loading import load_image
 
 class AsteroidsGame:
@@ -7,8 +8,11 @@ class AsteroidsGame:
         pygame.init()
         pygame.display.set_caption("Asteroids")
 
-        self.screen = pygame.display.set_mode((800, 600))
-        self.background = load_image("background")
+        self.screen = pygame.display.set_mode((1000, 667))
+        self.background = load_image("background", False)
+
+        self.spaceship = GameObject((400, 300), load_image("spaceship"), (0, 0))
+        self.asteroid = GameObject((500, 333), load_image("asteroid"), (1, 0))
 
     def start_game(self):
         while True:
@@ -22,10 +26,14 @@ class AsteroidsGame:
                 quit()
 
     def __game_logic_processing(self):
+        #self.spaceship.move()
+        #self.asteroid.move()
         pass
 
     def __drawing(self):
         self.screen.blit(self.background, (0, 0))
+        self.spaceship.draw(self.screen)
+        self.asteroid.draw(self.screen)
         pygame.display.flip()
 
     def __quit_game(self, event):
