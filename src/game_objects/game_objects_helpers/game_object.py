@@ -1,4 +1,4 @@
-from two_dimensional_vector import Vector2D
+from game_objects.game_objects_helpers.two_dimensional_vector import Vector2D
 
 class GameObject:
     def __init__(self, position, image, velocity):
