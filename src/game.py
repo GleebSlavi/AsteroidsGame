@@ -3,7 +3,7 @@ import pygame
 from game_objects.spaceship import Spaceship
 from game_objects.asteroid import Asteroid
 
-from utilities.utils import get_random_coordinates, load_image
+from utilities.helper_functions import get_random_coordinates, load_image
 
 class AsteroidsGame:
     MIN_ASTEROID_DISTANCE = 250
@@ -13,20 +13,12 @@ class AsteroidsGame:
         pygame.display.set_caption("Asteroids")
 
         self.screen = pygame.display.set_mode((1000, 667))
-        self.background = load_image("background", False)
+        self.background = load_image("background")
         self.clock = pygame.time.Clock()
 
         self.spaceship = Spaceship((500, 333))
         self.bullets = []
-        self.asteroids = []
-
-        for _ in range(6):
-            position = get_random_coordinates(self.screen)
-            while (position.euclidean_distance(self.spaceship.position)
-                    <= self.MIN_ASTEROID_DISTANCE):
-                position = get_random_coordinates(self.screen)
-
-            self.asteroids.append(Asteroid(position.to_tuple()))
+        self.asteroids = self.__create_multiple_asteroids()
 
     def start_game(self):
         while True:
@@ -64,4 +56,16 @@ class AsteroidsGame:
             objects.append(self.spaceship)
 
         return objects
+
+    def __create_multiple_asteroids(self):
+        asteroids = []
+        for _ in range(6):
+            position = get_random_coordinates(self.screen)
+            while (position.euclidean_distance(self.spaceship.position)
+                    <= self.MIN_ASTEROID_DISTANCE):
+                position = get_random_coordinates(self.screen)
+
+            asteroids.append(Asteroid(position.to_tuple()))
+
+        return asteroids
 

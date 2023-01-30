@@ -11,6 +11,12 @@ class Vector2D:
     def __add__(self, other):
         return Vector2D(self.x + other.x, self.y - other.y)
 
+    def __iadd__(self, other):
+        self.x += other.x
+        self.y += other.y
+
+        return self
+
     def euclidean_distance(self, other) -> float:
         return sqrt(((self.x - other.x) ** 2) + ((self.y - other.y) ** 2))
 

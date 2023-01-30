@@ -1,5 +1,5 @@
 from game_objects.game_objects_helpers.game_object import GameObject, Vector2D
-from utilities.utils import load_image
+from utilities.helper_functions import load_image
 
 class Asteroid(GameObject):
     def __init__(self, position):

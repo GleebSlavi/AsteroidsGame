@@ -9,10 +9,8 @@ def get_random_coordinates(surface):
                     random.randrange(surface.get_height()))
 
 
-def load_image(name: str, with_alpha: bool=True):
-    path = os.path.join("external_recourses", "images", f"{name}.png")
+def load_image(name: str):
+    image_directory = os.path.join("external_recourses", "images")
+    image = os.path.join(image_directory, f"{name}.png")
 
-    if with_alpha:
-        return load(path).convert_alpha()
-    else:
-        return load(path).convert()
+    return load(image).convert_alpha()
