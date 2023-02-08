@@ -47,3 +47,15 @@ def safe_highest_score(new_highest_score: int) -> None:
     
     with open(path, 'w') as file:
         file.write(str(new_highest_score))
+
+def show_score_and_highest_score(surface: Surface, font: font.Font, score: int, highest_score: int) -> None:
+    texts = [f"Highest Score: {highest_score}", f"Score: {score}"]
+    score_fonts = []
+
+    for text in texts:
+        score_fonts.append(font.render(text, True, Color("azure")))
+
+    y = 3
+    for score_font in score_fonts:
+        surface.blit(score_font, (3, y))
+        y += 20

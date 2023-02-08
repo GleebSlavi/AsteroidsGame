@@ -7,7 +7,8 @@ from game_objects.asteroid import Asteroid
 from game_objects.bullet import Bullet
 
 from utilities.helper_functions import (get_random_coordinates, 
-        load_image, load_sound, print_game_over_text, get_highest_score)
+        load_image, load_sound, print_game_over_text, get_highest_score,
+        show_score_and_highest_score)
 
 class AsteroidsGame:
     SCORE: int = 0
@@ -21,7 +22,8 @@ class AsteroidsGame:
         self.screen = pygame.display.set_mode((1000, 667))
         self.background = load_image("background")
         self.clock = pygame.time.Clock()
-        self.font = font.Font(None, 80)
+        self.game_over_font = font.Font(None, 80)
+        self.score_font = font.Font(None, 30)
 
         self.spaceship = Spaceship((500, 333))
         self.bullets = []
@@ -58,11 +60,14 @@ class AsteroidsGame:
     def __drawing(self) -> None:
         self.screen.blit(self.background, (0, 0))
         
+        show_score_and_highest_score(self.screen, self.score_font,
+                self.SCORE, self.HIGHEST_SCORE)
+
         for game_object in self.__get_game_objects():
             game_object.object_drawing(self.screen)
 
         if self.is_destroyed:
-            print_game_over_text(self.screen, self.font)
+            print_game_over_text(self.screen, self.game_over_font)
 
         pygame.display.flip()
     
