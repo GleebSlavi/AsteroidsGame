@@ -1,4 +1,4 @@
-from math import sqrt, cos, sin
+from math import sqrt, cos, sin, atan2, pi
 from typing import Tuple
 
 class Vector2D:
@@ -7,7 +7,7 @@ class Vector2D:
         self.y = y
 
     def __sub__(self, other: "Vector2D") -> "Vector2D":
-        return Vector2D(self.x - other.x, self.y - other.y)
+        return Vector2D(self.x - other, self.y - other)
 
     def __add__(self, other: "Vector2D") -> "Vector2D":
         return Vector2D(self.x + other.x, self.y - other.y)
@@ -20,6 +20,9 @@ class Vector2D:
 
     def __div__(self, scalar: int | float) -> "Vector2D":
         return Vector2D(self.x / scalar, self.y / scalar)
+
+    def __mul__(self, scalar: int | float) -> "Vector2D":
+        return Vector2D(self.x * scalar, self.y * scalar)
 
     def euclidean_distance(self, other: "Vector2D") -> float:
         return sqrt(((self.x - other.x) ** 2) + ((self.y - other.y) ** 2))

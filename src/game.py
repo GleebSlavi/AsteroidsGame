@@ -13,7 +13,6 @@ from utilities.helper_functions import (get_random_coordinates,
         show_score_and_highest_score, safe_highest_score)
 
 class AsteroidsGame:
-    SCORE: int = 0
     HIGHEST_SCORE: int = get_highest_score()
     MIN_ASTEROID_DISTANCE: int = 250
 
@@ -29,7 +28,9 @@ class AsteroidsGame:
 
         self.spaceship = Spaceship((500, 333))
         self.bullets = []
-        self.asteroids = self.__create_multiple_asteroids()
+        self.asteroids = self.__create_multiple_asteroids(0)
+
+        self.score = 0
 
     def start_game(self) -> None:
         load_sound("game_song", mixer)
@@ -48,7 +49,7 @@ class AsteroidsGame:
         keys = pygame.key.get_pressed()
 
         if self.spaceship and self.__spaceship_moving(keys):
-            self.spaceship.spaceship_movement_handling(keys)
+            self.spaceship.spaceship_movement_handling(keys, self.screen)
                 
 
     def __game_logic_processing(self) -> None:
@@ -56,6 +57,9 @@ class AsteroidsGame:
 
         if self.spaceship and self.__asteroid_collision(self.spaceship):
             self.spaceship = None
+
+            if self.score > self.HIGHEST_SCORE:
+                self.HIGHEST_SCORE = self.score
             safe_highest_score(self.HIGHEST_SCORE)
 
         for bullet in self.bullets:
@@ -72,7 +76,7 @@ class AsteroidsGame:
     def __drawing(self) -> None:
         self.screen.blit(self.background, (0, 0))
         show_score_and_highest_score(self.screen, self.score_font,
-                self.SCORE, self.HIGHEST_SCORE)
+                self.score, self.HIGHEST_SCORE)
 
         for game_object in self.__get_game_objects():
             if game_object:
@@ -132,7 +136,5 @@ class AsteroidsGame:
             3: 10
         }
 
-        self.SCORE += points[asteroid_size]
-        if self.SCORE > self.HIGHEST_SCORE:
-            self.HIGHEST_SCORE = self.SCORE 
+        self.score += points[asteroid_size]
 
