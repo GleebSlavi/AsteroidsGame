@@ -14,10 +14,12 @@ class Asteroid(GameObject):
 
     def __init__(self, position: Vector2D, size: int = 1):
         self.size = size
-        image = pygame.transform.scale(load_image("asteroid"), self.__get_new_size())
+        image = load_image("asteroid")
+
+        image = pygame.transform.scale(image, self.__get_new_size(image))
 
         super().__init__(position, image, get_random_velocity().to_tuple())
 
-    def __get_new_size(self):
-        return (self.image.get_rect().width * self.SIZES[self.size],
-                self.image.get_rect().height * self.SIZES[self.size])
+    def __get_new_size(self, image: Surface):
+        return (image.get_rect().width * self.SIZES[self.size],
+                image.get_rect().height * self.SIZES[self.size])

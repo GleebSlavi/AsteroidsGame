@@ -31,8 +31,6 @@ class AsteroidsGame:
         self.bullets = []
         self.asteroids = self.__create_multiple_asteroids()
 
-        self.is_destroyed = False
-
     def start_game(self) -> None:
         load_sound("game_song", mixer)
         mixer.music.play(loops=-1)
@@ -49,16 +47,16 @@ class AsteroidsGame:
 
         keys = pygame.key.get_pressed()
 
-        if self.__spaceship_moving(keys):
+        if self.spaceship and self.__spaceship_moving(keys):
             self.spaceship.spaceship_movement_handling(keys)
                 
 
     def __game_logic_processing(self) -> None:
         self.__move_objects()
 
-        if self.__asteroid_collision(self.spaceship):
+        if self.spaceship and self.__asteroid_collision(self.spaceship):
+            self.spaceship = None
             safe_highest_score(self.HIGHEST_SCORE)
-            self.is_destroyed = True
 
         for bullet in self.bullets:
             asteroid= self.__asteroid_collision(bullet)
@@ -77,9 +75,10 @@ class AsteroidsGame:
                 self.SCORE, self.HIGHEST_SCORE)
 
         for game_object in self.__get_game_objects():
-            game_object.object_drawing(self.screen)
+            if game_object:
+                game_object.object_drawing(self.screen)
 
-        if self.is_destroyed:
+        if not self.spaceship:
             print_game_over_text(self.screen, self.game_over_font)
 
         pygame.display.flip()
@@ -111,7 +110,8 @@ class AsteroidsGame:
 
     def __move_objects(self) -> None:
         for game_object in self.__get_game_objects():
-            game_object.object_moving(self.screen)
+            if game_object:
+                game_object.object_moving(self.screen)
 
     def __asteroid_collision(self, other_object) -> Asteroid | None:
         for asteroid in self.asteroids:
