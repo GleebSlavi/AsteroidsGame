@@ -1,5 +1,5 @@
 import pygame
-from pygame import event, mixer, font, Color
+from pygame import event, mixer, font
 from typing import List
 
 from game_objects.spaceship import Spaceship
@@ -7,9 +7,11 @@ from game_objects.asteroid import Asteroid
 from game_objects.bullet import Bullet
 
 from utilities.helper_functions import (get_random_coordinates, 
-        load_image, load_sound, print_game_over_text)
+        load_image, load_sound, print_game_over_text, get_highest_score)
 
 class AsteroidsGame:
+    SCORE: int = 0
+    HIGHEST_SCORE: int = get_highest_score()
     MIN_ASTEROID_DISTANCE: int = 250
 
     def __init__(self):
@@ -40,13 +42,11 @@ class AsteroidsGame:
         for event in pygame.event.get():
             if self.__quit_game(event):
                 quit()
-        
+
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_LEFT]:
-            self.spaceship.rotate(False)
-        elif keys[pygame.K_RIGHT]:
-            self.spaceship.rotate()
+        if self.__spaceship_moving(keys):
+            self.spaceship.spaceship_movement_handling(keys)
                 
 
     def __game_logic_processing(self) -> None:
@@ -54,8 +54,6 @@ class AsteroidsGame:
 
         if self.__asteroid_collision(self.spaceship):
             self.is_destroyed = True
-
-
 
     def __drawing(self) -> None:
         self.screen.blit(self.background, (0, 0))
@@ -73,8 +71,8 @@ class AsteroidsGame:
     def __quit_game(self, event: event) -> bool:
         return event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE)
 
-    def __move_spaceship(self, event: event) -> bool:
-        return event.type == pygame.KEYDOWN and event.key in (pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT)
+    def __spaceship_moving(self, keys: List[bool]) -> bool:
+        return any([keys[pygame.K_w], keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d]])
 
     def __get_game_objects(self) -> List[Asteroid | Bullet | Spaceship]:
         objects =  [*self.asteroids, *self.bullets, self.spaceship]

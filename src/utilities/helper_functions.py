@@ -33,3 +33,17 @@ def print_game_over_text(surface: Surface, font: font.Font) -> None:
     text_rect.center = (500, 333)
 
     surface.blit(game_over_text, text_rect)
+
+def get_highest_score() -> int:
+    path = os.path.join("src", "utilities", "highest_score.txt")
+
+    with open(path) as file:
+        score = int(file.read().strip())
+
+    return score
+
+def safe_highest_score(new_highest_score: int) -> None:
+    path = os.path.join("src", "utilities", "highest_score.txt")
+    
+    with open(path, 'w') as file:
+        file.write(str(new_highest_score))
