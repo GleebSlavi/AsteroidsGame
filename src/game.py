@@ -1,14 +1,16 @@
 import pygame
 from pygame import event, mixer, font
-from typing import List
+from typing import List, Tuple
 
 from game_objects.spaceship import Spaceship
 from game_objects.asteroid import Asteroid
 from game_objects.bullet import Bullet
 
+from game_objects.game_objects_helpers.two_dimensional_vector import Vector2D
+
 from utilities.helper_functions import (get_random_coordinates, 
         load_image, load_sound, print_game_over_text, get_highest_score,
-        show_score_and_highest_score)
+        show_score_and_highest_score, safe_highest_score)
 
 class AsteroidsGame:
     SCORE: int = 0
@@ -55,11 +57,22 @@ class AsteroidsGame:
         self.__move_objects()
 
         if self.__asteroid_collision(self.spaceship):
+            safe_highest_score(self.HIGHEST_SCORE)
             self.is_destroyed = True
+
+        for bullet in self.bullets:
+            asteroid= self.__asteroid_collision(bullet)
+            if asteroid:
+                self.asteroids.remove(asteroid)
+                self.bullets.remove(bullet)
+                self.__create_new_asteroids(asteroid.size, asteroid.position)
+                self.__add_score(asteroid.size)
+
+                if self.asteroids.count() <= 4:
+                    self.__create_multiple_asteroids(3)
 
     def __drawing(self) -> None:
         self.screen.blit(self.background, (0, 0))
-        
         show_score_and_highest_score(self.screen, self.score_font,
                 self.SCORE, self.HIGHEST_SCORE)
 
@@ -84,9 +97,9 @@ class AsteroidsGame:
 
         return objects
 
-    def __create_multiple_asteroids(self) -> List[Asteroid]:
+    def __create_multiple_asteroids(self, count: int = 6) -> List[Asteroid]:
         asteroids = []
-        for _ in range(6):
+        for _ in range(count):
             position = get_random_coordinates(self.screen)
             while (position.euclidean_distance(self.spaceship.position)
                     <= self.MIN_ASTEROID_DISTANCE):
@@ -96,15 +109,30 @@ class AsteroidsGame:
 
         return asteroids
 
-    def __move_objects(self):
+    def __move_objects(self) -> None:
         for game_object in self.__get_game_objects():
             game_object.object_moving(self.screen)
 
-
-    def __asteroid_collision(self, other_object):
+    def __asteroid_collision(self, other_object) -> Asteroid | None:
         for asteroid in self.asteroids:
             if asteroid.object_collision(other_object):
-                return True
+                return asteroid
 
-        return False
+        return None
+
+    def __create_new_asteroids(self, asteroid_size: int, position: Vector2D) -> None:
+        if asteroid_size < 3:
+            for _ in range(2):
+                self.asteroids.append(Asteroid(position.to_tuple(), asteroid_size + 1))
+
+    def __add_score(self, asteroid_size: int) -> None:
+        points = {
+            1: 50,
+            2: 25,
+            3: 10
+        }
+
+        self.SCORE += points[asteroid_size]
+        if self.SCORE > self.HIGHEST_SCORE:
+            self.HIGHEST_SCORE = self.SCORE 
 
