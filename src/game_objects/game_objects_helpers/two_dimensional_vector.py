@@ -1,5 +1,6 @@
-from math import sqrt, cos, sin, atan2, pi
+from math import sqrt, cos, sin
 from typing import Tuple
+from pygame import Surface
 
 class Vector2D:
     def __init__(self, x: float, y: float):
@@ -7,7 +8,7 @@ class Vector2D:
         self.y = y
 
     def __sub__(self, other: "Vector2D") -> "Vector2D":
-        return Vector2D(self.x - other, self.y - other)
+        return Vector2D(self.x - other.x, self.y - other.y)
 
     def __add__(self, other: "Vector2D") -> "Vector2D":
         return Vector2D(self.x + other.x, self.y - other.y)
@@ -15,6 +16,12 @@ class Vector2D:
     def __iadd__(self, other: "Vector2D") -> "Vector2D":
         self.x += other.x
         self.y += other.y
+
+        return self
+
+    def __isub__(self, other: "Vector2D") -> "Vector2D":
+        self.x -= other.x
+        self.y -= other.y
 
         return self
 

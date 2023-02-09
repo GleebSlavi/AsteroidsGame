@@ -28,7 +28,7 @@ class AsteroidsGame:
 
         self.spaceship = Spaceship((500, 333))
         self.bullets = []
-        self.asteroids = self.__create_multiple_asteroids(0)
+        self.asteroids = self.__create_multiple_asteroids(6)
 
         self.score = 0
 

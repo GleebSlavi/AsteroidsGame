@@ -15,7 +15,6 @@ class Asteroid(GameObject):
     def __init__(self, position: Vector2D, size: int = 1):
         self.size = size
         image = load_image("asteroid")
-
         image = pygame.transform.scale(image, self.__get_new_size(image))
 
         super().__init__(position, image, get_random_velocity().to_tuple())

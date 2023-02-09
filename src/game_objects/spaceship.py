@@ -4,47 +4,50 @@ from typing import List
 import math
 
 from game_objects.game_objects_helpers.game_object import GameObject, Vector2D
-from utilities.helper_functions import load_image
+from utilities.helper_functions import load_image, get_sin_or_cos
 
 class Spaceship(GameObject):
-    SPEED: float = 0.15
-    ROTATION: int = 5
+    SPEED: float = 0.05
+    ROTATION: int = 3
 
     def __init__(self, position):
         super().__init__(position, load_image("spaceship"), (0, 0))
         self.angle = 0
-
-        self.__rotate_image()
+        self.spaceship_direction = self.__get_direction()
 
     def object_drawing(self, surface: Surface) -> None:
-        surface.blit(self.rotated_image, self.rotated_rect)
+        rotated_image = pygame.transform.rotate(self.image, self.angle)
+        rotated_rect = self.image.get_rect()
+        rotated_rect.center = self.position.to_tuple()
+        surface.blit(rotated_image, rotated_rect)
 
-    def __up_and_down(self, up: bool = True) -> None:
-        if up:
-            self.velocity -= self.SPEED
+    def __move_forward_and_back(self, forward: bool = True) -> None:
+        if forward:
+            self.velocity.x += get_sin_or_cos(self.angle, False) * self.SPEED
+            self.velocity.y -= get_sin_or_cos(self.angle) * self.SPEED
         else:
-            self.velocity += self.SPEED
-
-    def __rotate(self, right: bool = True):
+            self.velocity.x -= get_sin_or_cos(self.angle, False) * self.SPEED
+            self.velocity.y += get_sin_or_cos(self.angle) * self.SPEED
+            
+    def __rotate(self, right: bool = True) -> None:
         if right:
             self.angle -= self.ROTATION
         else:
             self.angle += self.ROTATION
 
-        self.__rotate_image()
-
     def spaceship_movement_handling(self, keys: List[bool], surface) -> None:
         if keys[pygame.K_w]:
-            self.__up_and_down()
+            self.__move_forward_and_back()
         elif keys[pygame.K_s]:
-            self.__up_and_down(False)
+            self.__move_forward_and_back(False)
 
         if keys[pygame.K_a]:
             self.__rotate(False)
         elif keys[pygame.K_d]:
             self.__rotate()
 
-    def __rotate_image(self):
-        self.rotated_image = pygame.transform.rotate(self.image, self.angle)
-        self.rotated_rect = self.image.get_rect()
-        self.rotated_rect.center = self.position.to_tuple()
+    def __get_direction(self) -> Vector2D:
+        x = self.position.x + get_sin_or_cos(self.angle) * self.image.get_width() // 2
+        y = self.position.y - get_sin_or_cos(self.angle, False) * self.image.get_height() // 2
+
+        return Vector2D(x, y)

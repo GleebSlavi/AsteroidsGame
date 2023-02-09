@@ -1,5 +1,6 @@
 import os
 import random
+from math import sin, cos, radians
 from pygame.image import load
 from pygame import mixer, Surface, font, Color
 
@@ -24,7 +25,7 @@ def load_sound(name: str, mixer: mixer) -> None:
 
 def get_random_velocity():
     angle = random.randrange(0, 360)
-    return Vector2D(3, 0).rotate(angle)
+    return Vector2D(2, 0).rotate(angle)
 
 def print_game_over_text(surface: Surface, font: font.Font) -> None:
     game_over_text = font.render("Game Over!", True, Color("azure"))
@@ -59,3 +60,9 @@ def show_score_and_highest_score(surface: Surface, font: font.Font, score: int, 
     for score_font in score_fonts:
         surface.blit(score_font, (3, y))
         y += 20
+
+def get_sin_or_cos(angle: int, is_sin: bool = True):
+    if is_sin:
+        return sin(radians(angle + 90))
+
+    return cos(radians(angle + 90))
