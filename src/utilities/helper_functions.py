@@ -3,13 +3,13 @@ import random
 from math import sin, cos, radians
 from pygame.image import load
 from pygame import mixer, Surface, font, Color
+from typing import Tuple
 
 from game_objects.game_objects_helpers.two_dimensional_vector import Vector2D
 
 def get_random_coordinates(surface: Surface) -> Vector2D:
     return Vector2D(random.randrange(surface.get_width()),
                     random.randrange(surface.get_height()))
-
 
 def load_image(name: str) -> Surface:
     image_directory = os.path.join("external_recourses", "images")
@@ -27,14 +27,6 @@ def get_random_velocity():
     angle = random.randrange(0, 360)
     return Vector2D(2, 0).rotate(angle)
 
-def print_game_over_text(surface: Surface, font: font.Font) -> None:
-    game_over_text = font.render("Game Over!", True, Color("azure"))
-    
-    text_rect = game_over_text.get_rect()
-    text_rect.center = (500, 333)
-
-    surface.blit(game_over_text, text_rect)
-
 def get_highest_score() -> int:
     path = os.path.join("src", "utilities", "highest_score.txt")
 
@@ -49,20 +41,16 @@ def safe_highest_score(new_highest_score: int) -> None:
     with open(path, 'w') as file:
         file.write(str(new_highest_score))
 
-def show_score_and_highest_score(surface: Surface, font: font.Font, score: int, highest_score: int) -> None:
-    texts = [f"Highest Score: {highest_score}", f"Score: {score}"]
-    score_fonts = []
-
-    for text in texts:
-        score_fonts.append(font.render(text, True, Color("azure")))
-
-    y = 3
-    for score_font in score_fonts:
-        surface.blit(score_font, (3, y))
-        y += 20
-
 def get_sin_or_cos(angle: int, is_sin: bool = True):
     if is_sin:
         return sin(radians(angle + 90))
 
     return cos(radians(angle + 90))
+
+def print_text_on_screen(surface: Surface, font: font.Font, text: str, coordinates: Tuple[float, float]):
+    screen_text = font.render(text, True, Color("azure"))
+
+    text_rect = screen_text.get_rect()
+    text_rect.center = coordinates
+
+    surface.blit(screen_text, text_rect)
