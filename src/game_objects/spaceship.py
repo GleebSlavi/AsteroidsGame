@@ -1,13 +1,22 @@
-import pygame
-from pygame import Surface
+"""
+Module that contains Spaceschip class
+"""
+
 from typing import List
-from pygame.mixer import Sound
+
+import pygame
+import pygame.locals
+from pygame import Surface
 
 from game_objects.game_objects_helpers.game_object import GameObject, Vector2D
 from game_objects.bullet import Bullet
 from utilities.helper_functions import load_image, get_sin_or_cos
 
 class Spaceship(GameObject):
+    """
+    Spaceship class that inherites GameObject class
+    """
+
     SPEED: float = 0.03
     ROTATION: int = 3
     BULLET_SPEED: float = 5
@@ -18,23 +27,32 @@ class Spaceship(GameObject):
         self.head = self.__get_direction()
 
     def object_drawing(self, surface: Surface) -> None:
+        """
+        Method that draws the spaceship on the screen
+        """
+
         rotated_image = pygame.transform.rotate(self.image, self.angle)
         rotated_rect = self.image.get_rect()
         rotated_rect.center = self.position.to_tuple()
         surface.blit(rotated_image, rotated_rect)
 
     def object_moving(self, surface: Surface) -> None:
+        """
+        Method that moves the spaceship on the screen and
+        change where the spaceship points to
+        """
+
         super().object_moving(surface)
         self.head = self.__get_direction()
 
     def __move_forward_and_back(self, forward: bool = True) -> None:
         if forward:
-            self.velocity.x += get_sin_or_cos(self.angle, False) * self.SPEED
-            self.velocity.y -= get_sin_or_cos(self.angle) * self.SPEED
+            self.velocity.x_coord += get_sin_or_cos(self.angle, False) * self.SPEED
+            self.velocity.y_coord -= get_sin_or_cos(self.angle) * self.SPEED
         else:
-            self.velocity.x -= get_sin_or_cos(self.angle, False) * self.SPEED
-            self.velocity.y += get_sin_or_cos(self.angle) * self.SPEED
-            
+            self.velocity.x_coord -= get_sin_or_cos(self.angle, False) * self.SPEED
+            self.velocity.y_coord += get_sin_or_cos(self.angle) * self.SPEED
+
     def __rotate(self, right: bool = True) -> None:
         if right:
             self.angle -= self.ROTATION
@@ -44,6 +62,11 @@ class Spaceship(GameObject):
         self.head = self.__get_direction()
 
     def spaceship_movement_handling(self, keys: List[bool]) -> None:
+        """
+        Method that calls the specific movement function
+        from the pressed button
+        """
+
         if keys[pygame.K_w]:
             self.__move_forward_and_back()
         elif keys[pygame.K_s]:
@@ -55,22 +78,26 @@ class Spaceship(GameObject):
             self.__rotate()
 
     def __get_direction(self) -> Vector2D:
-        x = self.position.x + get_sin_or_cos(self.angle) * self.image.get_width() // 2
-        y = self.position.y - get_sin_or_cos(self.angle, False) * self.image.get_height() // 2
+        new_x = (self.position.x_coord + get_sin_or_cos(self.angle) *
+                self.image.get_width() // 2)
+        new_y = (self.position.y_coord - get_sin_or_cos(self.angle, False) *
+                self.image.get_height() // 2)
 
-        return Vector2D(x, y)
+        return Vector2D(new_x, new_y)
 
     def shooting(self) -> Bullet:
+        """
+        Method that create a bullet and returns it
+        """
+
         bullet_velocity = self.__get_bulet_velocity()
         bullet = Bullet(self.head.to_tuple(), bullet_velocity.to_tuple())
         bullet.angle = self.angle
 
-
-
         return bullet
 
     def __get_bulet_velocity(self) -> Vector2D:
-        x = (self.head.x * 0.8) * (self.SPEED * get_sin_or_cos(self.angle, False))
-        y = (self.head.y * 0.8) * (self.SPEED * get_sin_or_cos(self.angle))
+        new_x = (self.head.x_coord * 0.8) * (self.SPEED * get_sin_or_cos(self.angle, False))
+        new_y = (self.head.y_coord * 0.8) * (self.SPEED * get_sin_or_cos(self.angle))
 
-        return Vector2D(x, y)
+        return Vector2D(new_x, new_y)

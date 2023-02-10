@@ -1,3 +1,8 @@
+"""
+Module that creates an AsteroidGame object
+and starts the game
+"""
+
 from game import AsteroidsGame
 
 if __name__ == "__main__":
