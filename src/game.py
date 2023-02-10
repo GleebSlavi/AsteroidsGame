@@ -1,6 +1,6 @@
 import pygame
-from pygame import event, mixer, font
-from typing import List
+from pygame import event, font
+from typing import List, Tuple
 
 from game_objects.spaceship import Spaceship
 from game_objects.asteroid import Asteroid
@@ -22,21 +22,24 @@ class AsteroidsGame:
         self.screen = pygame.display.set_mode((1000, 666))
         self.background = load_image("background")
 
+        self.music_game_sound = load_sound("game_song")
+        self.bullet_shot_sound = load_sound("bullet_shot")
+
         self.game_over_font = font.Font(None, 80)
-        self.score_font = font.Font(None, 30)
+        self.score_font = font.Font(None, 35)
         self.new_high_score_font = font.Font(None, 60)
 
         self.spaceship = Spaceship((500, 333))
         self.bullets = []
-        self.asteroids = self.__create_multiple_asteroids(0)
+        self.asteroids = self.__create_multiple_asteroids()
 
         self.clock = pygame.time.Clock()
         self.score = 0
         self.new_high_score = False
 
     def start_game(self) -> None:
-        #load_sound("game_song", mixer)
-        #mixer.music.play(loops=-1)
+        channel = pygame.mixer.Channel(0)
+        channel.play(self.music_game_sound, loops=-1)
 
         while True:
             self.__input_handling()
@@ -47,8 +50,11 @@ class AsteroidsGame:
         for event in pygame.event.get():
             if self.__quit_game(event):
                 quit()
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            elif self.spaceship and event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 self.bullets.append(self.spaceship.shooting())
+                
+                channel = pygame.mixer.Channel(1)
+                channel.play(self.bullet_shot_sound)
 
         keys = pygame.key.get_pressed()
         if self.spaceship and self.__spaceship_moving(keys):
@@ -68,24 +74,25 @@ class AsteroidsGame:
         for bullet in self.bullets:
             asteroid = self.__asteroid_collision(bullet)
             if asteroid:
-                self.asteroids.remove(asteroid)
+                del self.asteroids[asteroid[0]]
                 self.bullets.remove(bullet)
-                self.__create_new_asteroids(asteroid.size, asteroid.position)
-                self.__add_score(asteroid.size)
+                self.__create_new_asteroids(asteroid[1].size, asteroid[1].position)
+                self.__add_score(asteroid[1].size)
 
                 if len(self.asteroids) <= 4:
-                    self.__create_multiple_asteroids(3)
+                    print(len(self.asteroids))
+                    self.asteroids = self.asteroids + self.__create_multiple_asteroids(3)
+
 
     def __drawing(self) -> None:
         self.screen.blit(self.background, (0, 0))
 
         for game_object in self.__get_game_objects():
-            if game_object:
                 game_object.object_drawing(self.screen)
 
         print_text_on_screen(self.screen, self.score_font, f"Highest Score: {self.HIGHEST_SCORE}",
-                             (85, 15))
-        print_text_on_screen(self.screen, self.score_font, f"", (45, 35))
+                             (self.screen.get_width() // 2, 15))
+        print_text_on_screen(self.screen, self.score_font, f"{self.score}", (self.screen.get_width() // 2, 45))
 
         if not self.spaceship:
             print_text_on_screen(self.screen, self.game_over_font, "Game Over!",
@@ -105,7 +112,10 @@ class AsteroidsGame:
         return any([keys[pygame.K_w], keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d]])
 
     def __get_game_objects(self) -> List[Asteroid | Bullet | Spaceship]:
-        objects =  [*self.asteroids, *self.bullets, self.spaceship]
+        objects =  [*self.asteroids, *self.bullets]
+
+        if self.spaceship:
+            objects.append(self.spaceship)
 
         return objects
 
@@ -129,10 +139,10 @@ class AsteroidsGame:
             if isinstance(game_object, Bullet) and not game_object:
                 self.bullets.remove(game_object)
 
-    def __asteroid_collision(self, other_object) -> Asteroid | None:
-        for asteroid in self.asteroids:
+    def __asteroid_collision(self, other_object) -> Tuple[int, Asteroid] | None:
+        for i, asteroid in enumerate(self.asteroids):
             if asteroid.object_collision(other_object):
-                return asteroid
+                return (i, asteroid)
 
         return None
 

@@ -1,8 +1,9 @@
 import os
 import random
 from math import sin, cos, radians
+from pygame.mixer import Sound
 from pygame.image import load
-from pygame import mixer, Surface, font, Color
+from pygame import Surface, font, Color
 from typing import Tuple
 
 from game_objects.game_objects_helpers.two_dimensional_vector import Vector2D
@@ -17,15 +18,15 @@ def load_image(name: str) -> Surface:
 
     return load(image).convert_alpha()
 
-def load_sound(name: str, mixer: mixer) -> None:
+def load_sound(name: str) -> Sound:
     sound_directory = os.path.join("external_recourses", "sounds")
     sound = os.path.join(sound_directory, f"{name}.wav")
 
-    mixer.music.load(sound)
+    return Sound(sound)
 
 def get_random_velocity():
     angle = random.randrange(0, 360)
-    return Vector2D(2, 0).rotate(angle)
+    return Vector2D(1.5, 0).rotate(angle)
 
 def get_highest_score() -> int:
     path = os.path.join("src", "utilities", "highest_score.txt")

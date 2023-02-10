@@ -1,7 +1,7 @@
 import pygame
 from pygame import Surface
 from typing import List
-import math
+from pygame.mixer import Sound
 
 from game_objects.game_objects_helpers.game_object import GameObject, Vector2D
 from game_objects.bullet import Bullet
@@ -64,6 +64,8 @@ class Spaceship(GameObject):
         bullet_velocity = self.__get_bulet_velocity()
         bullet = Bullet(self.head.to_tuple(), bullet_velocity.to_tuple())
         bullet.angle = self.angle
+
+
 
         return bullet
 
