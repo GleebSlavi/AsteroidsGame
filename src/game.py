@@ -1,6 +1,6 @@
 import pygame
 from pygame import event, mixer, font
-from typing import List, Tuple
+from typing import List
 
 from game_objects.spaceship import Spaceship
 from game_objects.asteroid import Asteroid
@@ -28,15 +28,15 @@ class AsteroidsGame:
 
         self.spaceship = Spaceship((500, 333))
         self.bullets = []
-        self.asteroids = self.__create_multiple_asteroids(6)
+        self.asteroids = self.__create_multiple_asteroids(0)
 
         self.clock = pygame.time.Clock()
         self.score = 0
         self.new_high_score = False
 
     def start_game(self) -> None:
-        load_sound("game_song", mixer)
-        mixer.music.play(loops=-1)
+        #load_sound("game_song", mixer)
+        #mixer.music.play(loops=-1)
 
         while True:
             self.__input_handling()
@@ -47,11 +47,12 @@ class AsteroidsGame:
         for event in pygame.event.get():
             if self.__quit_game(event):
                 quit()
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                self.bullets.append(self.spaceship.shooting())
 
         keys = pygame.key.get_pressed()
         if self.spaceship and self.__spaceship_moving(keys):
-            self.spaceship.spaceship_movement_handling(keys, self.screen)
-                
+            self.spaceship.spaceship_movement_handling(keys)
 
     def __game_logic_processing(self) -> None:
         self.__move_objects()
@@ -72,7 +73,7 @@ class AsteroidsGame:
                 self.__create_new_asteroids(asteroid.size, asteroid.position)
                 self.__add_score(asteroid.size)
 
-                if self.asteroids.count() <= 4:
+                if len(self.asteroids) <= 4:
                     self.__create_multiple_asteroids(3)
 
     def __drawing(self) -> None:
@@ -84,7 +85,7 @@ class AsteroidsGame:
 
         print_text_on_screen(self.screen, self.score_font, f"Highest Score: {self.HIGHEST_SCORE}",
                              (85, 15))
-        print_text_on_screen(self.screen, self.score_font, f"Score: {self.score}", (45, 35))
+        print_text_on_screen(self.screen, self.score_font, f"", (45, 35))
 
         if not self.spaceship:
             print_text_on_screen(self.screen, self.game_over_font, "Game Over!",
@@ -124,6 +125,9 @@ class AsteroidsGame:
         for game_object in self.__get_game_objects():
             if game_object:
                 game_object.object_moving(self.screen)
+
+            if isinstance(game_object, Bullet) and not game_object:
+                self.bullets.remove(game_object)
 
     def __asteroid_collision(self, other_object) -> Asteroid | None:
         for asteroid in self.asteroids:

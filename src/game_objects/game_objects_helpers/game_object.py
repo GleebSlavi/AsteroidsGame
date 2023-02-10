@@ -17,14 +17,14 @@ class GameObject:
     def object_moving(self, surface: Surface) -> None:
         self.position += self.velocity
 
-        self.position.x = self._check_position(self.position.x, surface.get_width())
-        self.position.y = self._check_position(self.position.y, surface.get_height())
+        self.position.x = self.__check_position(self.position.x, surface.get_width())
+        self.position.y = self.__check_position(self.position.y, surface.get_height())
 
     def object_collision(self, other: "GameObject") -> bool:
         distance = self.position.euclidean_distance(other.position)
         return distance < self.radius + other.radius
 
-    def _check_position(self, position: float, surface_dimension: float) -> float:
+    def __check_position(self, position: float, surface_dimension: float) -> float:
         if position > surface_dimension + self.radius:
             return -self.radius
         elif position < -self.radius:

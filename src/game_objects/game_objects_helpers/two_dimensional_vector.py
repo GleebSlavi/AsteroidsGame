@@ -1,6 +1,5 @@
 from math import sqrt, cos, sin
 from typing import Tuple
-from pygame import Surface
 
 class Vector2D:
     def __init__(self, x: float, y: float):
