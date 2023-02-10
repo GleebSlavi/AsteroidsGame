@@ -8,9 +8,9 @@ from game_objects.bullet import Bullet
 from utilities.helper_functions import load_image, get_sin_or_cos
 
 class Spaceship(GameObject):
-    SPEED: float = 0.05
+    SPEED: float = 0.03
     ROTATION: int = 3
-    BULLET_SPEED: float = 0.000001
+    BULLET_SPEED: float = 5
 
     def __init__(self, position):
         super().__init__(position, load_image("spaceship"), (0, 0))
