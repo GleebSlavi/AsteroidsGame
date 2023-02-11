@@ -4,13 +4,11 @@ Module that contains Spaceschip class
 
 from typing import List
 
-import pygame
-import pygame.locals
-from pygame import Surface
+from pygame import Surface, transform, K_w, K_a, K_s, K_d
 
+from utilities.helper_functions import load_image, get_sin_or_cos
 from game_objects.game_objects_helpers.game_object import GameObject, Vector2D
 from game_objects.bullet import Bullet
-from utilities.helper_functions import load_image, get_sin_or_cos
 
 class Spaceship(GameObject):
     """
@@ -31,7 +29,7 @@ class Spaceship(GameObject):
         Method that draws the spaceship on the screen
         """
 
-        rotated_image = pygame.transform.rotate(self.image, self.angle)
+        rotated_image = transform.rotate(self.image, self.angle)
         rotated_rect = self.image.get_rect()
         rotated_rect.center = self.position.to_tuple()
         surface.blit(rotated_image, rotated_rect)
@@ -67,14 +65,14 @@ class Spaceship(GameObject):
         from the pressed button
         """
 
-        if keys[pygame.K_w]:
+        if keys[K_w]:
             self.__move_forward_and_back()
-        elif keys[pygame.K_s]:
+        elif keys[K_s]:
             self.__move_forward_and_back(False)
 
-        if keys[pygame.K_a]:
+        if keys[K_a]:
             self.__rotate(False)
-        elif keys[pygame.K_d]:
+        elif keys[K_d]:
             self.__rotate()
 
     def __get_direction(self) -> Vector2D:

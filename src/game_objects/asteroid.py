@@ -1,11 +1,19 @@
-import pygame
-from pygame import Surface
+"""
+Module that contains Asteroid class
+"""
+
 from typing import Dict
 
-from game_objects.game_objects_helpers.game_object import GameObject, Vector2D
+from pygame import transform, Surface
+
 from utilities.helper_functions import load_image, get_random_velocity
+from game_objects.game_objects_helpers.game_object import GameObject, Vector2D
 
 class Asteroid(GameObject):
+    """
+    Asteroid class that inherites GameObject class
+    """
+
     SIZES: Dict[int, float] = {
         1: 1,
         2: 0.5,
@@ -15,7 +23,7 @@ class Asteroid(GameObject):
     def __init__(self, position: Vector2D, size: int = 1):
         self.size = size
         image = load_image("asteroid")
-        image = pygame.transform.scale(image, self.__get_new_size(image))
+        image = transform.scale(image, self.__get_new_size(image))
 
         super().__init__(position, image, get_random_velocity().to_tuple())
 

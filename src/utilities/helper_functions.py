@@ -2,12 +2,12 @@
 Module that contains helper functions
 """
 
-from typing import Tuple
 import os
-import random
+from typing import Tuple
+from random import randrange
 from math import sin, cos, radians
 
-import pygame
+from pygame.font import Font
 from pygame.mixer import Sound
 from pygame.image import load
 from pygame import Surface, Color
@@ -20,8 +20,8 @@ def get_random_coordinates(surface: Surface) -> Vector2D:
     coordinates
     """
 
-    return Vector2D(random.randrange(surface.get_width()),
-                    random.randrange(surface.get_height()))
+    return Vector2D(randrange(surface.get_width()),
+                    randrange(surface.get_height()))
 
 def load_image(name: str) -> Surface:
     """
@@ -49,7 +49,7 @@ def get_random_velocity():
     random coordinates
     """
 
-    angle = random.randrange(0, 360)
+    angle = randrange(0, 360)
     return Vector2D(1.5, 0).rotate(angle)
 
 def get_highest_score() -> int:
@@ -85,13 +85,13 @@ def get_sin_or_cos(angle: int, is_sin: bool = True):
 
     return cos(radians(angle + 90))
 
-def print_text_on_screen(surface: Surface, font: pygame.font.Font, text: str,
+def print_text_on_screen(surface: Surface, image_font: Font, text: str,
                         coordinates: Tuple[float, float]):
     """
     Method that prints text on the screen
     """
 
-    screen_text = font.render(text, True, Color("azure"))
+    screen_text = image_font.render(text, True, Color("azure"))
 
     text_rect = screen_text.get_rect()
     text_rect.center = coordinates

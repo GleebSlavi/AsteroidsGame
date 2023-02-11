@@ -5,7 +5,6 @@ Module that contains AsteroidGame class
 from typing import List, Tuple
 
 import pygame
-from pygame import font
 
 from game_objects.spaceship import Spaceship
 from game_objects.asteroid import Asteroid
@@ -27,6 +26,7 @@ class AsteroidsGame:
 
     def __init__(self):
         pygame.init()
+
         pygame.display.set_caption("Asteroids")
         self.screen = pygame.display.set_mode((1000, 666))
         self.background = load_image("background")
@@ -34,9 +34,9 @@ class AsteroidsGame:
         self.music_game_sound = load_sound("game_song")
         self.bullet_shot_sound = load_sound("bullet_shot")
 
-        self.game_over_font = font.Font(None, 80)
-        self.score_font = font.Font(None, 35)
-        self.new_high_score_font = font.Font(None, 60)
+        self.game_over_font = pygame.font.Font(None, 80)
+        self.score_font = pygame.font.Font(None, 35)
+        self.new_high_score_font = pygame.font.Font(None, 60)
 
         self.spaceship = Spaceship((500, 333))
         self.bullets = []
