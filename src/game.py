@@ -82,8 +82,7 @@ class AsteroidsGame:
             self.spaceship = None
 
             if self.score > self.HIGHEST_SCORE:
-                self.HIGHEST_SCORE = self.score
-                safe_highest_score(self.HIGHEST_SCORE)
+                safe_highest_score(self.score)
                 self.new_high_score = True
 
         for bullet in self.bullets:
@@ -104,7 +103,7 @@ class AsteroidsGame:
         for game_object in self.__get_game_objects():
             game_object.object_drawing(self.screen)
 
-        print_text_on_screen(self.screen, self.score_font, f"Highest Score: {self.HIGHEST_SCORE}",
+        print_text_on_screen(self.screen, self.score_font, f"Highest Score: {self.HIGHESTSCORE}",
                              (self.screen.get_width() // 2, 15))
         print_text_on_screen(self.screen, self.score_font, f"{self.score}",
                             (self.screen.get_width() // 2, 45))
