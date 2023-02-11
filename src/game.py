@@ -103,7 +103,7 @@ class AsteroidsGame:
         for game_object in self.__get_game_objects():
             game_object.object_drawing(self.screen)
 
-        print_text_on_screen(self.screen, self.score_font, f"Highest Score: {self.HIGHESTSCORE}",
+        print_text_on_screen(self.screen, self.score_font, f"Highest Score: {self.HIGHEST_SCORE}",
                              (self.screen.get_width() // 2, 15))
         print_text_on_screen(self.screen, self.score_font, f"{self.score}",
                             (self.screen.get_width() // 2, 45))
