@@ -4,7 +4,7 @@ Module that contains Spaceschip class
 
 from typing import List
 
-from pygame import Surface, transform, K_w, K_a, K_s, K_d
+from pygame import Surface, transform , K_w, K_a, K_d, K_s
 
 from src.helper_functions import load_image, get_sin_or_cos
 from src.game_objects.game_objects_helpers.game_object import GameObject, Vector2D
