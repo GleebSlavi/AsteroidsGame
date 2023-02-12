@@ -4,8 +4,8 @@ Module that contains Bullet class
 
 from pygame import Surface, transform
 
-from utilities.helper_functions import load_image
-from game_objects.game_objects_helpers.game_object import GameObject
+from src.helper_functions import load_image
+from src.game_objects.game_objects_helpers.game_object import GameObject
 
 class Bullet(GameObject):
     """

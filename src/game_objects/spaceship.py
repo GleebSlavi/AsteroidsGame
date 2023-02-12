@@ -6,9 +6,9 @@ from typing import List
 
 from pygame import Surface, transform, K_w, K_a, K_s, K_d
 
-from utilities.helper_functions import load_image, get_sin_or_cos
-from game_objects.game_objects_helpers.game_object import GameObject, Vector2D
-from game_objects.bullet import Bullet
+from src.helper_functions import load_image, get_sin_or_cos
+from src.game_objects.game_objects_helpers.game_object import GameObject, Vector2D
+from src.game_objects.bullet import Bullet
 
 class Spaceship(GameObject):
     """

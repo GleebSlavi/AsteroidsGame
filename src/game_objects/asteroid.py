@@ -6,8 +6,8 @@ from typing import Dict
 
 from pygame import transform, Surface
 
-from utilities.helper_functions import load_image, get_random_velocity
-from game_objects.game_objects_helpers.game_object import GameObject, Vector2D
+from src.helper_functions import load_image, get_random_velocity
+from src.game_objects.game_objects_helpers.game_object import GameObject, Vector2D
 
 class Asteroid(GameObject):
     """

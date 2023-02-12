@@ -5,7 +5,7 @@ Module that contains GameObject class
 from typing import Tuple
 from pygame import Surface
 
-from game_objects.game_objects_helpers.two_dimensional_vector import Vector2D
+from src.game_objects.game_objects_helpers.two_dimensional_vector import Vector2D
 
 class GameObject:
     """

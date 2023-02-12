@@ -6,13 +6,13 @@ from typing import List, Tuple
 
 import pygame
 
-from game_objects.spaceship import Spaceship
-from game_objects.asteroid import Asteroid
-from game_objects.bullet import Bullet
+from src.game_objects.spaceship import Spaceship
+from src.game_objects.asteroid import Asteroid
+from src.game_objects.bullet import Bullet
 
-from game_objects.game_objects_helpers.two_dimensional_vector import Vector2D
+from src.game_objects.game_objects_helpers.two_dimensional_vector import Vector2D
 
-from utilities.helper_functions import (get_random_coordinates,
+from src.helper_functions import (get_random_coordinates,
         load_image, load_sound, get_highest_score,
         safe_highest_score, print_text_on_screen)
 
