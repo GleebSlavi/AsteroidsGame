@@ -1,10 +1,4 @@
 {
     "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true,
-    "python.autoComplete.extraPaths": [
-        "${workspaceFolder}/asteroids/src/"
-    ],
-    "python.analysis.extraPaths": [
-        "${workspaceFolder}/asteroids/src/"
-    ]
+    "python.linting.enabled": true
 }

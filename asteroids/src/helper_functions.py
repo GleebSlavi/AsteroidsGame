@@ -28,7 +28,7 @@ def load_image(name: str) -> Surface:
     Method that loads and returns an image from its name
     """
 
-    image_directory = os.path.join("external_recourses", "images")
+    image_directory = os.path.join("asteroids", "external_recourses", "images")
     image = os.path.join(image_directory, f"{name}.png")
 
     return load(image).convert_alpha()
@@ -38,7 +38,7 @@ def load_sound(name: str) -> Sound:
     Method that loads and returns a sound from its name
     """
 
-    sound_directory = os.path.join("external_recourses", "sounds")
+    sound_directory = os.path.join("asteroids", "external_recourses", "sounds")
     sound = os.path.join(sound_directory, f"{name}.wav")
 
     return Sound(sound)
@@ -58,7 +58,7 @@ def get_highest_score() -> int:
     and returns it
     """
 
-    path = os.path.join("external_recourses", "high_score", "high_score.txt")
+    path = os.path.join("asteroids", "external_recourses", "high_score", "high_score.txt")
 
     with open(path, encoding="utf-8") as file:
         score = int(file.read().strip())
@@ -70,7 +70,7 @@ def safe_highest_score(new_highest_score: int) -> None:
     Method that safes the highest score in a file
     """
 
-    path = os.path.join("external_recourses", "high_score", "high_score.txt")
+    path = os.path.join("asteroids", "external_recourses", "high_score", "high_score.txt")
 
     with open(path, 'w', encoding="utf-8") as file:
         file.write(str(new_highest_score))
