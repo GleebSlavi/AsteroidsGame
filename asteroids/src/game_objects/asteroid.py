@@ -2,7 +2,7 @@
 Module that contains Asteroid class
 """
 
-from typing import Dict
+from typing import Dict, Tuple
 
 from pygame import transform, Surface
 
@@ -27,6 +27,6 @@ class Asteroid(GameObject):
 
         super().__init__(position, image, get_random_velocity().to_tuple())
 
-    def __get_new_size(self, image: Surface):
+    def __get_new_size(self, image: Surface) -> Tuple[float, float]:
         return (image.get_rect().width * self.SIZES[self.size],
                 image.get_rect().height * self.SIZES[self.size])
