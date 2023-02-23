@@ -75,7 +75,7 @@ def safe_highest_score(new_highest_score: int) -> None:
     with open(path, 'w', encoding="utf-8") as file:
         file.write(str(new_highest_score))
 
-def get_sin_or_cos(angle: int, is_sin: bool = True):
+def get_sin_or_cos(angle: int, is_sin: bool = True) -> float:
     """
     Method that return sin or cosine of an angle
     """
@@ -86,7 +86,7 @@ def get_sin_or_cos(angle: int, is_sin: bool = True):
     return cos(radians(angle + 90))
 
 def print_text_on_screen(surface: Surface, image_font: Font, text: str,
-                        coordinates: Tuple[float, float]):
+                        coordinates: Tuple[float, float]) -> None:
     """
     Method that prints text on the screen
     """
