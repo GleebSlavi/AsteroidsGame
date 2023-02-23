@@ -43,7 +43,7 @@ def load_sound(name: str) -> Sound:
 
     return Sound(sound)
 
-def get_random_velocity():
+def get_random_velocity() -> Vector2D:
     """
     Method that returns velocity Vector2D object with
     random coordinates
